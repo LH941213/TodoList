@@ -29,7 +29,8 @@ build/
 # Log files
 *.log
 *. 로그
-
+# Manual lib folder (if you had one)
+lib/
 # Package Files
 *.jar
 *.war
