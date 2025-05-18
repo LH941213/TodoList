@@ -16,9 +16,13 @@
     
     <!-- 新增任务按钮 -->
     <div style="text-align: center; margin: 20px;">
-        <a href="${pageContext.request.contextPath}/add_task.jsp"><button>Add New Task</button></a>
+        <a href="${pageContext.request.contextPath}/add_task.jsp"><button>添加新任务</button></a>
+        
     </div>
-    
+    <div style="text-align:right;margin:20px;">
+    <a href="${pageContext.request.contextPath}/login.jsp"><button>登录</button></a>
+     <a href="${pageContext.request.contextPath}/register.jsp"><button>注册</button></a>
+    </div>
     <!-- 任务列表 -->
     <table>
         <tr>

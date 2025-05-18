@@ -23,10 +23,16 @@ public class DeleteTaskServlet extends HttpServlet{
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
         String idParam = request.getParameter("id");
+        Integer userId = (Integer) request.getSession().getAttribute("userId");
+    	if(userId==null) {
+			request.setAttribute("errorMessage", "请先登录");
+			request.getRequestDispatcher("/login.jsp").forward(request, response);
+			return;
+		}
         if (idParam != null && !idParam.trim().isEmpty()) {
             try {
                 int id = Integer.parseInt(idParam);
-                taskDao.deleteTask(id);
+                taskDao.deleteTask(id,userId);
                 response.sendRedirect(request.getContextPath() + "/tasks/list");
             } catch (NumberFormatException e) {
                 request.setAttribute("errorMessage", "Invalid task ID.");

@@ -7,13 +7,15 @@ public class Task {
     private boolean isCompleted =false;
     private Date createdAt =new Date();
     private Date updatedAt; 
+    private int userId; 
     public Task() {}
     
-    public Task(String title, String description) {
+    public Task(String title, String description,int userId) {
         this.title = title;
         this.description = description;
         this.isCompleted = false;  // 默认未完成
         this.createdAt = new Date(); // 自动设置创建时间
+        this.userId=userId;
     }
     public Task(int id, String title, String description, boolean isCompleted, Date createdAt) {
         this.id = id;
@@ -69,6 +71,8 @@ public class Task {
 	public void setUpdatedAt(Date updatedAt) {
 		this.updatedAt = updatedAt;
 	}
-    
+	public int getUserId() { return userId; }
+    public void setUserId(int userId) { this.userId = userId; }
+
     
 }

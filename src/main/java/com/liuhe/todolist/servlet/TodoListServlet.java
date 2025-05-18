@@ -23,16 +23,22 @@ public class TodoListServlet extends HttpServlet {
 	}
 
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException{
+		Integer userId =(Integer)request.getSession().getAttribute("userId");
+		if(userId==null) {
+			request.setAttribute("errorMessage", "请先登录");
+			request.getRequestDispatcher("/login.jsp").forward(request, response);
+			return;
+		}
 		try {
 			
-			List<Task> tasks = taskDao.getAllTasks();
+			List<Task> tasks = taskDao.getTasksByUserId(userId);
 			
 			request.setAttribute("tasks", tasks);
 			request.getRequestDispatcher("/index.jsp").forward(request, response);
 		} catch (SQLException e) {
 			
 			e.printStackTrace();
-            request.setAttribute("errorMessage", "Failed to load tasks: " + e.getMessage());
+            request.setAttribute("errorMessage", "任务加载失败" + e.getMessage());
             request.getRequestDispatcher("/error.jsp").forward(request, response);
 		} 
 	}

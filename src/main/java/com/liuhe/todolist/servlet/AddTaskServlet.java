@@ -23,9 +23,14 @@ public class AddTaskServlet  extends HttpServlet{
     protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
         String title = request.getParameter("title");
         String description = request.getParameter("description");
-
+        Integer userId = (Integer) request.getSession().getAttribute("userId");
+    	if(userId==null) {
+			request.setAttribute("errorMessage", "请先登录");
+			request.getRequestDispatcher("/login.jsp").forward(request, response);
+			return;
+		}
         if (title != null && !title.trim().isEmpty()) {
-            Task newTask = new Task(title, description);
+            Task newTask = new Task(title, description,userId);
             try {
                 taskDao.addTask(newTask);
                 response.sendRedirect(request.getContextPath() + "/tasks/list");
