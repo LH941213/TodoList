@@ -8,27 +8,39 @@
 </head>
 <body>
  <h1>Edit Task</h1>
-    <form action="edit" method="post">
-        <input type="hidden" name="id" value="${task.id}">
-        <input type="hidden" name="createdAt" value="${task.createdAt}">
+ <%
+    Task task = (Task) request.getAttribute("task");
+    String contextPath = request.getContextPath();
+%>
+ 
+    <form action="<%= contextPath %>/tasks/edit" method="post">
+        <input type="hidden" name="id" value="<%= task.getId() %>">
+        <input type="hidden" name="createdAt" value="<%= task.getCreatedAt() %>">
         
-        <label>Title*:</label>
-        <input type="text" name="title" value="${task.title}" required><br><br>
+        <label>タイトル:</label>
+        <input type="text" name="title" value="<%= task.getTitle() %>" required><br><br>
         
-        <label>Description:</label><br>
-        <textarea name="description" rows="4" cols="50">${task.description}</textarea><br><br>
+        <label>説明:</label><br>
+        <textarea name="description" rows="4" cols="50"><%= task.getDescription() %></textarea><br><br>
         
         <label>
-            <input type="checkbox" name="isCompleted" ${task.completed ? 'checked' : ''}>
-            Mark as completed
+            <input type="checkbox" name="isCompleted" <%= task.isCompleted() ? "checked" : "" %>>
+            完了としてマーク
         </label><br><br>
         
-        <button type="submit">Update</button>
-        <a href="${pageContext.request.contextPath}/tasks/list"><button type="button">Cancel</button></a>
+        <button type="submit">アップデート</button>
+        <a href="<%= contextPath %>/index.jsp">
+        <button type="button">キャンセル</button>
+        </a>
     </form>
+      <%
+    String errorMessage = (String) request.getAttribute("errorMessage");
+    if (errorMessage != null && !errorMessage.isEmpty()) {
+	%>
+    <p><%= errorMessage %></p>
+	<%
+    	}
+	%>
     
-    <c:if test="${not empty errorMessage}">
-        <p style="color: red;">${errorMessage}</p>
-    </c:if>
 </body>
 </html>

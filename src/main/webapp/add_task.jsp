@@ -7,19 +7,31 @@
 </head>
 <body>
 <h1>Add New Task</h1>
-    <form action="${pageContext.request.contextPath}/tasks/add" method="post">
-        <label>Title*:</label>
+<%
+        String contextPath = request.getContextPath();
+    %>
+
+    <form action="<%= contextPath %>/tasks/add" method="post">
+        <label>タイトル:</label>
         <input type="text" name="title" required><br><br>
         
-        <label>Description:</label><br>
+        <label>説明:</label><br>
         <textarea name="description" rows="4" cols="50"></textarea><br><br>
         
-        <button type="submit">Save</button>
-        <a href="${pageContext.request.contextPath}/tasks/list"><button type="button">Cancel</button></a>
+        <button type="submit">保存</button>
+        <a href="<%= contextPath %>/index.jsp">
+        <button type="button">キャンセル</button>
+        </a>
     </form>
     
-    <c:if test="${not empty warningMessage}">
-        <p style="color: orange;">${warningMessage}</p>
-    </c:if>
+    <%
+    String warningMessage = (String) request.getAttribute("warningMessage");
+    if (warningMessage != null && !warningMessage.isEmpty()) {
+	%>
+    <p><%= warningMessage %></p>
+	<%
+    	}
+	%>
+
 </body>
 </html>

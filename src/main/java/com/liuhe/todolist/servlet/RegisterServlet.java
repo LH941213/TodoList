@@ -37,25 +37,25 @@ public class RegisterServlet extends HttpServlet {
 		    UserDao userDao = new UserDao();
 		    
 		    	try {
-					// 使用 getUserByUsername 方法检查用户名是否已存在
+					
 					if (userDao.getUserByUsername(username) != null) {
 					    request.setAttribute("message", "用户名已存在");
 					    request.getRequestDispatcher("register.jsp").forward(request, response);
 					    return;
 					}
-					 // 插入新用户
+					 
 					    boolean success = userDao.insertUser(username, password, email);
 					    if (success) {
-					        response.sendRedirect("login.jsp"); // 注册成功跳转到登录页面
+					        response.sendRedirect("login.jsp"); 
 					    } else {
 					        request.setAttribute("message", "注册失败，请重试");
 					        request.getRequestDispatcher("register.jsp").forward(request, response);
 					    }
 				} catch (ServletException e) {
-					// TODO 自動生成された catch ブロック
+					
 					e.printStackTrace();
 				} catch (IOException e) {
-					// TODO 自動生成された catch ブロック
+					
 					e.printStackTrace();
 				}
 

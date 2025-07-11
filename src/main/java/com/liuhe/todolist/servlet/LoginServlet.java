@@ -35,24 +35,25 @@ public class LoginServlet extends HttpServlet {
         User user = userDAO.getUserByUsername(username);
         
 
-        if (user != null && user.getPassword().equals(password)) { // 实际上应该使用哈希加密
-        	// 创建 Session，并存储用户信息
-            HttpSession session = request.getSession();
-            session.setAttribute("userId", user.getId()); // 存储用户ID
-            session.setAttribute("username", user.getUsername()); // 存储用户名
-
-
-            
-            request.getRequestDispatcher("index.jsp").forward(request, response);
-            
-        } else {
-            response.sendRedirect("login.jsp?error=true");
-       }}catch(Exception e){
-    	   e.printStackTrace();  // 这行代码会强制在 Eclipse 控制台显示完整错误
+	     if (user != null && user.getPassword().equals(password)) { 
+	        	// 创建 Session，并存储用户信息
+	            HttpSession session = request.getSession();
+	            session.setAttribute("userId", user.getId()); 
+	            session.setAttribute("username", user.getUsername()); 
+	
+	
+	            response.sendRedirect(request.getContextPath() + "/tasks/list");
+	           
+	            
+	        } else {
+	            response.sendRedirect("login.jsp?error=true");
+	        		}
+        }catch(Exception e){
+    	   e.printStackTrace();  
            System.out.println("❌ 登录处理发生错误：" + e.getMessage());
            response.sendRedirect("login.jsp?error=true"); 
        }
-
+		
 		
 	}
 

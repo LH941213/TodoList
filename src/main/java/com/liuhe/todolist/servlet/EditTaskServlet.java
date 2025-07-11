@@ -23,7 +23,7 @@ public class EditTaskServlet  extends HttpServlet{
 
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-    	 // 从 Session 获取当前登录用户 ID
+    	 
 
     	Integer userId = (Integer) request.getSession().getAttribute("userId");
     	if(userId==null) {
@@ -66,7 +66,7 @@ public class EditTaskServlet  extends HttpServlet{
  			return;
  		}
 
-    	// 获取参数
+    	
         String idParam = request.getParameter("id");
         String title = request.getParameter("title");
         String description = request.getParameter("description");
@@ -94,26 +94,24 @@ public class EditTaskServlet  extends HttpServlet{
             
             existingTask.setTitle(title);
             existingTask.setDescription(description);
-            existingTask.setCompleted(isCompleted); // 使用从请求中解析出的完成状态
+            existingTask.setCompleted(isCompleted); 
             
-         // updated_at 由 DAO 在执行 UPDATE 语句时使用数据库函数设置，所以这里不需要手动设置
-
-            // 3. 调用 DAO 更新数据库
+        
             taskDao.updateTask(existingTask,userId);
 
-            // 重定向到列表页
+           
             request.setAttribute("successMessage", "任务更新成功！");
-            request.getRequestDispatcher("/tasks/list.jsp").forward(request, response);
+            response.sendRedirect(request.getContextPath() + "/tasks/list");
             
         } catch (NumberFormatException e) {
-        	// ID 格式无效的错误处理
+        	
             request.setAttribute("errorMessage", "无效的任务ID格式");
              
              request.getRequestDispatcher("/edit_task.jsp").forward(request, response);
         }
          catch (SQLException e) {
-        	// 数据库错误处理
-             e.printStackTrace(); // 打印异常堆栈，方便调试
+        	
+             e.printStackTrace(); 
              request.setAttribute("errorMessage", "数据库错误，更新任务失败: " + e.getMessage());
             
              request.getRequestDispatcher("/error.jsp").forward(request, response);

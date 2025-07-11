@@ -7,7 +7,7 @@
 <title>Insert title here</title>
 </head>
 <body>
-	<form action="Register" method="post">
+	<form action="${pageContext.request.contextPath}/Register" method="post">
     <label>用户名:</label>
     <input type="text" name="username" required>
     <label>密码:</label>

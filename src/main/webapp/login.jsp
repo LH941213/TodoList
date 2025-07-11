@@ -7,12 +7,12 @@
 <title>登录</title>
 </head>
 <body>
-	<form action="Login" method="post">
-    <label>用户名：</label>
-    <input type="text" name="username">
-    <label>密码：</label>
-    <input type="password" name="password">
-    <button type="submit">登录</button>
+	<form action="${pageContext.request.contextPath}/Login" method="post">
+    <label>ユーザー名:</label>
+    <input type="text" name="username"><br><br>
+    <label>パスワード：</label>
+    <input type="password" name="password"><br><br>
+    <button type="submit">登录</button><br><br>
 </form>
 	
 </body>

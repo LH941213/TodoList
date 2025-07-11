@@ -40,7 +40,7 @@ public class AddTaskServlet  extends HttpServlet{
                 request.getRequestDispatcher("/error.jsp").forward(request, response);
             }
         } else {
-            request.setAttribute("warningMessage", "Title cannot be empty.");
+            request.setAttribute("warningMessage", "タイトルは空欄にできません");
             request.getRequestDispatcher("/index.jsp").forward(request, response);
         }
     }
