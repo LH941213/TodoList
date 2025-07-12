@@ -39,8 +39,10 @@ public class LoginServlet extends HttpServlet {
 	     if (user != null && user.getPassword().equals(password)) { 
 	        	// 创建 Session，并存储用户信息
 	            HttpSession session = request.getSession();
-	            session.setAttribute("userId", user.getId()); 
-	            session.setAttribute("username", user.getUsername()); 
+	            session.setAttribute("user", user); 
+	            session.setAttribute("userId", user.getId());
+
+	            
 	
 	
 	            response.sendRedirect(request.getContextPath() + "/tasks/list");

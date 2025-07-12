@@ -1,53 +1,42 @@
-#liuhe
-# Eclipse workspace
-.metadata/
-
-# Eclipse generated files
-
-
-# Maven generated files
-target/
-pom.xml.tag
-pom.xml.releaseBackup
-pom.xml.versionsBackup
-pom.xml.next
-release.properties
-
-# Gradle files
-.gradle/
-build/
-
-# IDE specific files (VS Code, IntelliJ, etc. - add if you use other IDEs)
-.idea/
-.vscode/
-
-# Compiled class files
+# クラスファイル（Javaコンパイル結果）
 *.class
 
-# Log files
-*.log
-*. 로그
-# Manual lib folder (if you had one)
-lib/
-# Package Files
+# jar、warなどのパッケージ成果物
 *.jar
 *.war
 *.ear
 
-# Generated files
-/bin/
+# Maven関連のビルド成果物（targetフォルダなど）
+/target/
+/dependency-reduced-pom.xml
+/maven-status/
 
-# Server config files managed by Eclipse
-# Adjust the path based on where Eclipse creates server configs,
-# it's often inside the workspace but might be in a separate project
-# If your Servers are *inside* the main project folder structure, you might need to be more specific.
-# If they are in a separate 'Servers' project within the workspace, ignoring .metadata/ covers it.
-# If server.xml is directly *in* your project root for deployment, then you would track *that* one,
-# but the one shown in your screenshot is the Eclipse-managed *copy*.
-# So, generally ignore Eclipse-managed server config folders:
-Servers/
+# Gradleを使用している場合のビルド成果物
+.gradle/
+/build/
 
-# Add specific server config files if they appear outside standard ignored folders and are IDE-managed
-# e.g., if you find server.xml directly under .metadata/
-# .metadata/.plugins/org.eclipse.wst.server.core/
-# .metadata/.plugins/org.eclipse.jst.server.tomcat.core/
+# ログファイルや一時ファイル
+*.log
+*.tmp
+*.bak
+
+# OS依存の不要ファイル
+.DS_Store
+Thumbs.db
+
+# Tomcatなどのサーバ実行時に生成される一時ファイル
+/work/
+/out/
+/tomcat.*.tmp
+
+# IDEA（IntelliJ）関連の設定（必要に応じて残す）
+.idea/
+*.iws
+*.iml
+
+# アップロードされた画像などを無視（ただしフォルダ自体は残す）
+webapp/images/*
+!webapp/images/.keep
+
+# バックアップ目的以外のバージョン管理対象外ファイル（任意）
+*.bak

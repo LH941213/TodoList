@@ -1,75 +1,51 @@
-# WebTodoList
+# WebTodoList 管理プラットフォーム
 
-Java Servlet と JSP を使用して構築されたタスク管理アプリケーションです。ユーザー登録、ログイン、タスクの追加・編集・削除などの機能を備えており、Microsoft SQL Server を使用してデータを管理しています。
+このプロジェクトは Java、JSP、Servlet を活用した Todoリスト管理アプリケーションです。ユーザー登録からログイン認証、タスクの作成・編集・削除、プロフィール設定まで、基本的な機能を一通り備えています。
 
----
+## 機能一覧
 
-##  主な機能
+- ユーザー登録・ログイン
+- タスクの追加、編集、削除
+- 完了ステータスの管理（完了／未完了）
+- プロフィール設定（名前、メール、パスワード、アバター画像）
+- アバター画像のアップロードと表示
+- 設定画面による情報更新
+- エラーメッセージや更新成功通知の表示
 
-- ユーザー登録／ログイン
-- タスクの作成・編集・削除
-- タスクの完了状態の切り替え
-- ログインユーザーによるタスク操作制限
+## 技術構成
 
----
+- Java（Servlet）
+- JSP、JSTL
+- HTML、CSS、JavaScript
+- Tomcat 9
+- JDBC（MySQL または他の RDB 対応可）
 
-## 使用技術
+## ディレクトリ構成
 
-- Java Servlet / JSP
-- Microsoft SQL Server + JDBC ドライバー
-- Eclipse（Pleiades）開発環境
-- Apache Tomcat（ローカル動作）
-- HTML / CSS（簡易な UI）
+/src                      Javaソースコード（Servletなど）  
+/webapp                  JSP、画像、スタイルなどのWebリソース  
+　└ /images              ユーザーのアバター画像保存用フォルダ  
+　└ *.jsp                各画面のテンプレート  
+/WEB-INF                 web.xml 設定ファイル  
+README.md                プロジェクトの説明  
+.gitignore               Git管理対象外のファイル設定  
 
----
+## セットアップ手順
 
-## プロジェクト構成
-WebTodoList/ 
-├── src/ 
-│   └── main/java/com/liuhe/SevenGroup/todolist/ 
-# 各種 Servlet クラス 
-├── src/main/webapp/ 
-│   ├── *.jsp                                    
-# JSP ページ 
-│   └── WEB-INF/ 
-│       ├── lib/                                
- # JDBC ドライバー配置 
- │       └── web.xml                             
-  # Servlet 設定ファイル 
-  ├── .classpath / .project / .settings/           
-  # Eclipse 設定ファイル 
-  ├── .gitignore                                   
-  # Git 除外設定
+1. リポジトリをクローン：
+   git clone https://github.com/あなたのユーザー名/todolist.git
 
+2. EclipseやIntelliJ IDEAでJava Webプロジェクトとしてインポート
 
----
+3. データベースを作成（必要に応じて `user` と `task` テーブルを作成）
 
-## 依存ライブラリ
+4. Tomcatにデプロイしてブラウザでアクセス：
+   http://localhost:8080/プロジェクト名/
 
-以下の JDBC ドライバーが `WEB-INF/lib/` に配置されている必要があります：
-mssql-jdbc-12.10.0.jre11.jar
+## 開発・貢献について
 
-> ドライバーが存在しない場合は、[Microsoft 公式サイト](https://learn.microsoft.com/ja-jp/sql/connect/jdbc/download-microsoft-jdbc-driver-for-sql-server)よりダウンロードしてください。
+本プロジェクトは学習および共同開発のために公開されています。改善提案や機能追加のアイデアは歓迎します。GitHub上でプルリクエストやIssueを作成してください。
 
----
+## ライセンス
 
-## 実行方法
-
-1. Apache Tomcat をインストール
-2. Eclipse（Pleiades）で本プロジェクトをインポート
-3. データベース接続情報を編集（`Servlet` クラス内の JDBC URL）
-4. Tomcat にデプロイして起動
-5. 以下の URL にアクセス：
-http://localhost:8080/WebTodoList
-
----
-
-##  開発者より
-
-このプロジェクトは Java Web 技術とデータベース連携の学習を目的として作成しました。ご質問やフィードバックがございましたら、お気軽にご連絡ください。
-
-GitHub プロフィール：[LH941213](https://github.com/LH941213)
-
-
-
-
+MITライセンス（または学校の方針に準拠）

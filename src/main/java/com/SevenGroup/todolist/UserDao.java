@@ -4,6 +4,8 @@ import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.util.ArrayList;
+import java.util.List;
 
 public class UserDao {
 	public User getUserByUsername(String username) {
@@ -20,7 +22,14 @@ public class UserDao {
             try (ResultSet rs = stmt.executeQuery()) {
                 if (rs.next()) {
                     
-                    user = new User(rs.getInt("id"), rs.getString("username"), rs.getString("password"));
+                    user = new User();
+                    
+                    user.setId(rs.getInt("id"));
+                    user.setUsername(rs.getString("username"));
+                    user.setPassword(rs.getString("password"));
+                    user.setName(rs.getString("name"));
+                    user.setEmail(rs.getString("email"));
+                    user.setAvatar(rs.getString("avatar"));
                 }
             }
             
@@ -47,4 +56,40 @@ public class UserDao {
 	        return false;
 	    }
 	}
+	public static void updateProfile(User user) throws SQLException {
+		String sql = "UPDATE users SET name = ?";
+		List<Object> params = new ArrayList<>();
+		params.add(user.getName());
+
+		if (user.getEmail() != null && !user.getEmail().isEmpty()) {
+		    sql += ", email = ?";
+		    params.add(user.getEmail());
+		}
+		if (user.getPassword() != null && !user.getPassword().isEmpty()) {
+		    sql += ", password = ?";
+		    params.add(user.getPassword());
+		}
+		if (user.getAvatar() != null && !user.getAvatar().isEmpty()) {
+		    sql += ", avatar = ?";
+		    params.add(user.getAvatar());
+		}
+
+		sql += " WHERE id = ?";
+		params.add(user.getId());
+	    
+	    try (Connection conn = DBUtil.getConnection();
+	         PreparedStatement ps = conn.prepareStatement(sql)) {
+	    	for (int i = 0; i < params.size(); i++) {
+	            ps.setObject(i + 1, params.get(i)); // 逐个填充占位符 ?
+	        }
+	    	
+
+	        ps.executeUpdate();
+	    }
+	    System.out.println("用户头像参数：" + user.getAvatar());
+
+	    System.out.println("执行 SQL：" + sql);
+    	System.out.println("参数：" + params);
+	}
+
 }
