@@ -2,8 +2,15 @@
 *.class
 
 # jar、warなどのパッケージ成果物
-*.jar
+# 忽略编译生成的 jar（比如 target/、out/ 中的）
+/target/*.jar
+/out/*.jar
+
+
+# 但保留 WEB-INF/lib 下的 jar 包（重点）
+!webapp/WEB-INF/lib/
 !webapp/WEB-INF/lib/*.jar
+
 
 *.war
 *.ear
