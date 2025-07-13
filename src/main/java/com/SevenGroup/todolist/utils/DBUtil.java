@@ -1,4 +1,4 @@
-package com.SevenGroup.todolist;
+package com.SevenGroup.todolist.utils;
 
 import java.sql.Connection;
 import java.sql.DriverManager;

@@ -1,4 +1,4 @@
-package com.SevenGroup.todolist;
+package com.SevenGroup.todolist.filter;
 
 import java.io.IOException;
 

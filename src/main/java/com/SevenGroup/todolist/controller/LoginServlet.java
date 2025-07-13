@@ -1,4 +1,4 @@
-package com.SevenGroup.todolist;
+package com.SevenGroup.todolist.controller;
 
 import java.io.IOException;
 
@@ -8,6 +8,9 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
+
+import com.SevenGroup.todolist.dao.UserDao;
+import com.SevenGroup.todolist.model.User;
 
 /**
  * Servlet implementation class LoginServlet
@@ -37,10 +40,11 @@ public class LoginServlet extends HttpServlet {
         
         
 	     if (user != null && user.getPassword().equals(password)) { 
-	        	// 创建 Session，并存储用户信息
+	        	// セッションを作成し、ユーザー情報を保存する。
 	            HttpSession session = request.getSession();
 	            session.setAttribute("user", user); 
 	            session.setAttribute("userId", user.getId());
+	            session.setAttribute("userRole", user.getRole());
 
 	            
 	
@@ -53,7 +57,7 @@ public class LoginServlet extends HttpServlet {
 	        		}
         }catch(Exception e){
     	   e.printStackTrace();  
-           System.out.println("❌ 登录处理发生错误：" + e.getMessage());
+           System.out.println("ログイン処理でエラーが発生しました：" + e.getMessage());
            response.sendRedirect("login.jsp?error=true"); 
        }
 	}

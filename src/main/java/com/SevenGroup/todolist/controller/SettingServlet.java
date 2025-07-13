@@ -1,4 +1,4 @@
-package com.SevenGroup.todolist;
+package com.SevenGroup.todolist.controller;
 
 import java.io.File;
 import java.io.IOException;
@@ -13,6 +13,9 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 import javax.servlet.http.Part;
+
+import com.SevenGroup.todolist.dao.UserDao;
+import com.SevenGroup.todolist.model.User;
 
 /**
  * Servlet implementation class SettingServlet

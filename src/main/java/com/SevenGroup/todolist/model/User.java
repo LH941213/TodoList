@@ -1,4 +1,4 @@
-package com.SevenGroup.todolist;
+package com.SevenGroup.todolist.model;
 
 public class User {
 	private int id;
@@ -7,7 +7,18 @@ public class User {
     private String name;
     private String email;
     private String avatar;
- 
+    private String role;
+
+ // Getter
+ public String getRole() {
+     return role;
+ }
+
+ // Setter
+ public void setRole(String role) {
+     this.role = role;
+ }
+
 
     
     public String getName() {

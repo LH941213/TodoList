@@ -1,7 +1,9 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
 	pageEncoding="UTF-8"%>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c"%>
-<c:set var="user" value="${sessionScope.user}" />
+<%@ page import="com.SevenGroup.todolist.utils.RoleUtil" %>
+
+<c:set var="user" value="${sessionScope.user}" />	
 
 <!DOCTYPE html>
 <html>
@@ -182,9 +184,35 @@ th {
     font-size: 16px;
 }
 
+.actions {
+    display: flex;
+    flex-direction: column; /* 垂直排列按钮 */
+    gap: 10px;               /* 按钮之间间距 */
+    width: 220px;            /* 整体固定宽度，更整齐 */
+    margin-top: 15px;
+}
+
+.actions a button {
+    width: 100%;
+    padding: 10px;
+    font-size: 14px;
+    background-color: #2b7bb9;
+    color: white;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+    transition: 0.3s;
+}
+
+.actions a button:hover {
+    background-color: #1d5d91;
+}
+
 </style>
 </head>
 <body>
+	
+	
 	<div class="container">
 		<!-- 左側のサイドバー -->
 		<div class="sidebar">
@@ -202,8 +230,35 @@ th {
 			</div>
 			<div class="actions">
 				<a href="${pageContext.request.contextPath}/add_task.jsp">
-					<button>新しいタスクを追加</button>
+					<button>タスクを追加</button>
 				</a>
+				<% 
+					String role = (String) session.getAttribute("userRole");
+				    if (role != null &&RoleUtil.isAdmin(role)) {
+
+				%>
+  					<a href="${pageContext.request.contextPath}/userAdmin">
+    				<button>ユーザー管理</button>
+  					</a>
+  					<a href="${pageContext.request.contextPath}/createTeam">
+        			<button>チーム作成</button>
+    				</a>
+  					
+
+			        <a href="${pageContext.request.contextPath}/team_list.jsp">
+			            <button>チーム一覧</button>
+			        </a>
+				
+			        <a href="${pageContext.request.contextPath}/create_team_task.jsp">
+			            <button>チームタスク追加</button>
+			        </a>
+			
+			        <a href="${pageContext.request.contextPath}/task_progress.jsp">
+			            <button>進捗報告・コメント</button>
+			        </a>
+  					
+				<% } %>
+				
 			</div>
 		</div>
 

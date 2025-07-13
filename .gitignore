@@ -3,6 +3,8 @@
 
 # jar、warなどのパッケージ成果物
 *.jar
+!webapp/WEB-INF/lib/*.jar
+
 *.war
 *.ear
 

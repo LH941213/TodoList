@@ -1,4 +1,4 @@
-package com.SevenGroup.todolist;
+package com.SevenGroup.todolist.dao;
 
 import java.sql.Connection;
 import java.sql.PreparedStatement;
@@ -6,6 +6,9 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
+
+import com.SevenGroup.todolist.model.Task;
+import com.SevenGroup.todolist.utils.DBUtil;
 
 public class TaskDao {
 	public void addTask(Task task) throws SQLException{

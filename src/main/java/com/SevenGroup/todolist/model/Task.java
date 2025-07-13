@@ -1,4 +1,4 @@
-package com.SevenGroup.todolist;
+package com.SevenGroup.todolist.model;
 import java.util.Date;
 public class Task {
 	private int id;

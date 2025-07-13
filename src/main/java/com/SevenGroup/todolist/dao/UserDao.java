@@ -1,4 +1,4 @@
-package com.SevenGroup.todolist;
+package com.SevenGroup.todolist.dao;
 
 import java.sql.Connection;
 import java.sql.PreparedStatement;
@@ -7,7 +7,37 @@ import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
 
+import com.SevenGroup.todolist.model.User;
+import com.SevenGroup.todolist.utils.DBUtil;
+
 public class UserDao {
+	public List<User> getAllUsers() {
+	    String sql = "SELECT * FROM users";
+	    List<User> userList = new ArrayList<>();
+
+	    try (Connection conn = DBUtil.getConnection();
+	         PreparedStatement stmt = conn.prepareStatement(sql);
+	         ResultSet rs = stmt.executeQuery()) {
+
+	        while (rs.next()) {
+	            User user = new User();
+	            user.setId(rs.getInt("id"));
+	            user.setUsername(rs.getString("username"));
+	            user.setPassword(rs.getString("password")); // 可选
+	            user.setName(rs.getString("name"));
+	            user.setEmail(rs.getString("email"));
+	            user.setAvatar(rs.getString("avatar"));
+	            user.setRole(rs.getString("role"));
+	            userList.add(user);
+	        }
+
+	    } catch (SQLException e) {
+	        e.printStackTrace();
+	    }
+
+	    return userList;
+	}
+
 	public User getUserByUsername(String username) {
         String sql = "SELECT * FROM users WHERE username = ?";
         User user = null;
@@ -30,6 +60,7 @@ public class UserDao {
                     user.setName(rs.getString("name"));
                     user.setEmail(rs.getString("email"));
                     user.setAvatar(rs.getString("avatar"));
+                    user.setRole(rs.getString("role"));
                 }
             }
             
@@ -86,10 +117,7 @@ public class UserDao {
 
 	        ps.executeUpdate();
 	    }
-	    System.out.println("用户头像参数：" + user.getAvatar());
-
-	    System.out.println("执行 SQL：" + sql);
-    	System.out.println("参数：" + params);
+	    
 	}
 
 }
