@@ -17,7 +17,7 @@ import com.SevenGroup.todolist.model.Task;
 /**
  * Servlet implementation class EditTaskServlet
  */
-@WebServlet("/tasks/edit")
+@WebServlet("/edittask")
 public class EditTaskServlet extends HttpServlet {
 	private TaskDao taskDao;
 

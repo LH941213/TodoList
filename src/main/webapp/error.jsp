@@ -43,6 +43,6 @@
 <body>
     <h1>エラーが発生しました</h1>
     <p>${errorMessage}</p>
-    <a href="${pageContext.request.contextPath}/tasks/list" class="btn-back">タスクリストへ戻る</a>
+    <a href="${pageContext.request.contextPath}/tasklist" class="btn-back">タスクリストへ戻る</a>
 </body>
 </html>

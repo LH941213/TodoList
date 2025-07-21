@@ -1,4 +1,7 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
+
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
+
 <!DOCTYPE html>
 <html>
 <head>
@@ -77,36 +80,56 @@
         font-size: 14px;
     }
 </style>
+<script>
+    function toggleTeamSelector() {
+        const type = document.querySelector('select[name="taskType"]').value;
+        const teamBlock = document.getElementById("teamSelector");
+        teamBlock.style.display = (type === "team") ? "block" : "none";
+    }
+ // 页面加载完后执行一次，以便初始判断
+    window.onload = toggleTeamSelector;
+        
+</script>
+
 </head>
 <body>
-    <div class="task-card">
+     <div class="task-card">
         <h1>新しいタスクの追加</h1>
 
-        <%
-            String contextPath = request.getContextPath();
-        %>
-
-        <form action="<%= contextPath %>/tasks/add" method="post">
+        <form action="${pageContext.request.contextPath}/addtask" method="post">
             <label>タイトル：</label>
             <input type="text" name="title" required>
 
             <label>説明：</label>
             <textarea name="description" rows="4" cols="50"></textarea>
 
+            <label>タスク種類：</label>
+            <select name="taskType" onchange="toggleTeamSelector()">
+                <option value="personal">個人タスク</option>
+                <option value="team">チームタスク</option>
+            </select>
+
+            <div id="teamSelector" style="display:block;">
+                <label>所属チーム：</label>
+                <select name="teamId">
+                    <c:forEach var="team" items="${teamList}">
+                        <option value="${team.teamId}">${team.teamName}</option>
+
+                        
+                    </c:forEach>
+                </select>
+            </div>
+
             <div class="buttons">
                 <button type="submit">保存</button>
-                <a href="<%= contextPath %>/index.jsp">
-                    <button type="button">キャンセル</button>
-                </a>
+                <button type="button" onclick="location.href='${pageContext.request.contextPath}/index.jsp'">キャンセル</button>
             </div>
         </form>
 
-        <%
-            String warningMessage = (String) request.getAttribute("warningMessage");
-            if (warningMessage != null && !warningMessage.isEmpty()) {
-        %>
-        <div class="message"><%= warningMessage %></div>
-        <% } %>
+        <c:if test="${not empty warningMessage}">
+            <div class="message">${warningMessage}</div>
+        </c:if>
     </div>
+    
 </body>
 </html>

@@ -15,7 +15,7 @@ import com.SevenGroup.todolist.model.Task;
 /**
  * Servlet implementation class AddTaskServlet
  */
-@WebServlet("/tasks/add")
+@WebServlet("/addtask")
 public class AddTaskServlet extends HttpServlet {
 	private TaskDao taskDao;
 	@Override
@@ -31,26 +31,46 @@ public class AddTaskServlet extends HttpServlet {
 	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		 String title = request.getParameter("title");
 	        String description = request.getParameter("description");
+	       
+	        String taskType = request.getParameter("taskType");
+	        String teamIdStr = request.getParameter("teamId");
 	        Integer userId = (Integer) request.getSession().getAttribute("userId");
+
 	    	if(userId==null) {
-				request.setAttribute("errorMessage", "请先登录");
+				request.setAttribute("errorMessage", "ログインしてください。");
 				request.getRequestDispatcher("/login.jsp").forward(request, response);
 				return;
 			}
-	        if (title != null && !title.trim().isEmpty()) {
-	            Task newTask = new Task(title, description,userId);
-	            try {
-	                taskDao.addTask(newTask);
-	                response.sendRedirect(request.getContextPath() + "/tasks/list");
-	            } catch (SQLException e) {
-	                e.printStackTrace();
-	                request.setAttribute("errorMessage", "Failed to add task: " + e.getMessage());
-	                request.getRequestDispatcher("/error.jsp").forward(request, response);
-	            }
-	        } else {
+	    	if (title == null || title.trim().isEmpty()) {
 	            request.setAttribute("warningMessage", "タイトルは空欄にできません");
-	            request.getRequestDispatcher("/index.jsp").forward(request, response);
+	            request.getRequestDispatcher("/add_task.jsp").forward(request, response);
+	            return;
 	        }
+
+	    	 try {
+	             Task newTask = new Task();
+	             newTask.setTitle(title);
+	             newTask.setDescription(description);
+	             newTask.setAssignedTo(userId); // 担当者
+	             newTask.setUserId(userId);  // 作成者（如果你有这个字段）
+
+	             if ("team".equals(taskType) && teamIdStr != null && !teamIdStr.isEmpty()) {
+	                 int teamId = Integer.parseInt(teamIdStr);
+	                 newTask.setTeamId(teamId); // 🔹 设定团队 ID，标识为团队任务
+	             }
+
+	             taskDao.addTask(newTask); // 🔹 插入数据库
+	             response.sendRedirect(request.getContextPath() + "/tasklist");
+
+	         } catch (SQLException e) {
+	             e.printStackTrace();
+	             request.setAttribute("errorMessage", "タスク登録に失敗しました：" + e.getMessage());
+	             request.getRequestDispatcher("/error.jsp").forward(request, response);
+	         } catch (NumberFormatException e) {
+	             request.setAttribute("warningMessage", "チームIDが無効です");
+	             request.getRequestDispatcher("/add_task.jsp").forward(request, response);
+	         }
+
 	}
 
 }

@@ -73,20 +73,40 @@ public class UserDao {
     }
 	public boolean insertUser(String username, String password, String email) {
 	    String sql = "INSERT INTO users (username, password, email) VALUES (?, ?, ?)";
-	    
+
 	    try (Connection conn = DBUtil.getConnection();
 	         PreparedStatement stmt = conn.prepareStatement(sql)) {
-	        
+
 	        stmt.setString(1, username);
-	        stmt.setString(2, password);  
+	        stmt.setString(2, password);  // 🔐 可加密
 	        stmt.setString(3, email);
-	        
-	        return stmt.executeUpdate() > 0; 
+
+
+	        return stmt.executeUpdate() > 0;
 	    } catch (SQLException e) {
 	        e.printStackTrace();
 	        return false;
 	    }
 	}
+	public boolean insertUser(User user) {
+	    String sql = "INSERT INTO users (username, password, email, name, role) VALUES (?, ?, ?, ?, ?)";
+
+	    try (Connection conn = DBUtil.getConnection();
+	         PreparedStatement stmt = conn.prepareStatement(sql)) {
+
+	        stmt.setString(1, user.getUsername());
+	        stmt.setString(2, user.getPassword());
+	        stmt.setString(3, user.getEmail());
+	        stmt.setString(4, user.getName());
+	        stmt.setString(5, user.getRole());
+
+	        return stmt.executeUpdate() > 0;
+	    } catch (SQLException e) {
+	        e.printStackTrace();
+	        return false;
+	    }
+	}
+
 	public static void updateProfile(User user) throws SQLException {
 		String sql = "UPDATE users SET name = ?";
 		List<Object> params = new ArrayList<>();

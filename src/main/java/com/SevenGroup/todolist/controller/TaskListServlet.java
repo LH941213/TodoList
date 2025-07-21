@@ -18,8 +18,8 @@ import com.SevenGroup.todolist.model.Task;
 /**
  * Servlet implementation class TodoListServlet
  */
-@WebServlet("/tasks/list")
-public class TodoListServlet extends HttpServlet {
+@WebServlet("/tasklist")
+public class TaskListServlet extends HttpServlet {
 	private TaskDao taskDao;
 	@Override
 	public void init() throws ServletException {

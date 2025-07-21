@@ -15,14 +15,14 @@ import com.SevenGroup.todolist.model.User;
 /**
  * Servlet implementation class UserAdminServlet
  */
-@WebServlet("/userAdmin")
-public class UserAdminServlet extends HttpServlet {
+@WebServlet("/edituser")
+public class EditUserServlet extends HttpServlet {
 	private static final long serialVersionUID = 1L;
        
     /**
      * @see HttpServlet#HttpServlet()
      */
-    public UserAdminServlet() {
+    public EditUserServlet() {
         super();
         // TODO Auto-generated constructor stub
     }
@@ -34,8 +34,8 @@ public class UserAdminServlet extends HttpServlet {
 		UserDao userDao = new UserDao();
         List<User> allUsers = userDao.getAllUsers();  // 你之前新加的方法
 
-        request.setAttribute("userList", allUsers);
-        request.getRequestDispatcher("/userList.jsp").forward(request, response);
+        request.setAttribute("userlist", allUsers);
+        request.getRequestDispatcher("/userlist.jsp").forward(request, response);
 
 	}
 
@@ -63,7 +63,7 @@ public class UserAdminServlet extends HttpServlet {
         }
 
         // 提交后跳回管理页面（刷新列表）
-        response.sendRedirect("userAdmin");
+        response.sendRedirect("edituser");
 
 	}
 

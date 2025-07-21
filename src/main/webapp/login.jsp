@@ -68,7 +68,7 @@
 <body>
     <div class="login-card">
         <h2>ログイン</h2>
-        <form action="${pageContext.request.contextPath}/Login" method="post">
+        <form action="${pageContext.request.contextPath}/login" method="post">
             <label>ユーザー名：</label>
             <input type="text" name="username" required>
 

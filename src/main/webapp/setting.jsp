@@ -20,7 +20,7 @@
 <body>
     <div class="settings-box">
         <h2>アカウント設定</h2>
-        <form action="SettingServlet" method="post" enctype="multipart/form-data">
+        <form action="setting" method="post" enctype="multipart/form-data">
         	<input type="hidden" name="action" value="updateProfile">
 
             <img class="avatar-preview" src="images/${user.avatar}" alt="アバター">

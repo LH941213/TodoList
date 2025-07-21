@@ -20,7 +20,7 @@ import com.SevenGroup.todolist.model.User;
 /**
  * Servlet implementation class SettingServlet
  */
-@WebServlet("/SettingServlet")
+@WebServlet("/setting")
 @MultipartConfig
 
 public class SettingServlet extends HttpServlet {

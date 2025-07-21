@@ -13,7 +13,7 @@ import com.SevenGroup.todolist.dao.UserDao;
 /**
  * Servlet implementation class RegisterServlet
  */
-@WebServlet("/Register")
+@WebServlet("/register")
 public class RegisterServlet extends HttpServlet {
 	
 

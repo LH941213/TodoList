@@ -217,45 +217,58 @@ th {
 		<!-- 左側のサイドバー -->
 		<div class="sidebar">
 			<!-- ユーザードロップダウン -->
-			<div class="user-dropdown">
-				<div class="user-toggle" onclick="toggleDropdown()">
-					<img src="${pageContext.request.contextPath}/images/${user.avatar}" alt="アバター" class="avatar">
-					<span class="user-name">${user.name}</span>
-					<span class="caret">▼</span>
-				</div>
-				<ul class="dropdown-menu" id="dropdownMenu">
-					<li><a href="${pageContext.request.contextPath}/setting.jsp">設定</a></li>
-					<!-- 今後、ログアウトやヘルプなどの項目を追加できます -->
-				</ul>
-			</div>
+						<%
+						    Integer userId = (Integer) session.getAttribute("userId");
+						    if (userId == null) {
+						%>
+				    <!-- 🔒 未登录时显示登录按钮 -->
+				    <div class="user-dropdown">
+				        <a href="${pageContext.request.contextPath}/login.jsp">
+				            <button class="login-btn">ログイン</button>
+				        </a>
+				    </div>
+							<%
+							    } else {
+							%>
+				    <!-- ✅ 已登录时显示用户信息下拉 -->
+				    <div class="user-dropdown">
+				        <div class="user-toggle" onclick="toggleDropdown()">
+				            <img src="${pageContext.request.contextPath}/images/${user.avatar}" alt="アバター" class="avatar">
+				            <span class="user-name">${user.name}</span>
+				            <span class="caret">▼</span>
+				        </div>
+				        <ul class="dropdown-menu" id="dropdownMenu">
+				            <li><a href="${pageContext.request.contextPath}/setting.jsp">設定</a></li>
+				            <li><a href="${pageContext.request.contextPath}/logout">ログアウト</a></li> <!-- 🔁 可选：添加 logout 处理 -->
+				        </ul>
+				    </div>
+				<%
+				    }
+				%>
+						
 			<div class="actions">
-				<a href="${pageContext.request.contextPath}/add_task.jsp">
-					<button>タスクを追加</button>
+				<a href="${pageContext.request.contextPath}/taskform">
+    			<button>タスクを追加</button>
 				</a>
+
 				<% 
 					String role = (String) session.getAttribute("userRole");
 				    if (role != null &&RoleUtil.isAdmin(role)) {
 
 				%>
-  					<a href="${pageContext.request.contextPath}/userAdmin">
+  					<a href="${pageContext.request.contextPath}/edituser">
     				<button>ユーザー管理</button>
   					</a>
-  					<a href="${pageContext.request.contextPath}/createTeam">
+  					<a href="${pageContext.request.contextPath}/addteam">
         			<button>チーム作成</button>
     				</a>
   					
 
-			        <a href="${pageContext.request.contextPath}/team_list.jsp">
+			        <a href="${pageContext.request.contextPath}/teamlist">
 			            <button>チーム一覧</button>
 			        </a>
 				
-			        <a href="${pageContext.request.contextPath}/create_team_task.jsp">
-			            <button>チームタスク追加</button>
-			        </a>
-			
-			        <a href="${pageContext.request.contextPath}/task_progress.jsp">
-			            <button>進捗報告・コメント</button>
-			        </a>
+			        
   					
 				<% } %>
 				
@@ -267,23 +280,40 @@ th {
 			<h1>Todoリスト</h1>
 			<table>
 				<tr>
-					<th>ID</th>
-					<th>タイトル</th>
-					<th>詳細</th>
-					<th>ステータス</th>
-					<th>作成日時</th>
-					<th>操作</th>
+					 <th>ID</th>
+					  <th>タイトル</th>
+					  <th>詳細</th>
+					  <th>種別</th> <!-- 🔸 NEW: 個人 or チーム -->
+					  <th>チーム名</th> <!-- 🔸 NEW: 所属チーム -->
+					  <th>ステータス</th>
+					  <th>作成日時</th>
+					  <th>操作</th>
+
 				</tr>
 				<c:forEach items="${tasks}" var="task">
 					<tr>
 						<td>${task.id}</td>
 						<td>${task.title}</td>
 						<td>${task.description}</td>
+						 <td>
+					      <c:choose>
+					        <c:when test="${task.teamId != null}">
+					          チーム
+					        </c:when>
+					        <c:otherwise>
+					          個人
+					        </c:otherwise>
+					      </c:choose>
+					    </td>
+						<td>
+					      <c:out value="${task.teamName != null ? task.teamName : '-'}" />
+					    </td>
+						
 						<td>${task.completed ? '完了' : '未完了'}</td>
 						<td>${task.createdAt}</td>
 						<td class="table-actions">
-							<a href="${pageContext.request.contextPath}/tasks/edit?id=${task.id}">編集</a>
-							<a href="${pageContext.request.contextPath}/tasks/delete?id=${task.id}"
+							<a href="${pageContext.request.contextPath}/edittask?id=${task.id}">編集</a>
+							<a href="${pageContext.request.contextPath}/deltask?id=${task.id}"
 							   onclick="return confirm('このタスクを本当に削除しますか？')" class="delete">削除</a>
 						</td>
 					</tr>

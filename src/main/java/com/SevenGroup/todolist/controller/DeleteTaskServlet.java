@@ -16,7 +16,7 @@ import com.SevenGroup.todolist.dao.TaskDao;
 /**
  * Servlet implementation class DeleteTaskServlet
  */
-@WebServlet("/tasks/delete")
+@WebServlet("/deltask")
 public class DeleteTaskServlet extends HttpServlet {
 	private TaskDao taskDao;
 
@@ -45,7 +45,7 @@ public class DeleteTaskServlet extends HttpServlet {
             try {
                 int id = Integer.parseInt(idParam);
                 taskDao.deleteTask(id,userId);
-                response.sendRedirect(request.getContextPath() + "/tasks/list");
+                response.sendRedirect(request.getContextPath() + "/tasklist");
             } catch (NumberFormatException e) {
                 request.setAttribute("errorMessage", "Invalid task ID.");
                 request.getRequestDispatcher("/error.jsp").forward(request, response);

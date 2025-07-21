@@ -1,6 +1,6 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
-<%@ page import="com.SevenGroup.todolist.Task" %>
+<%@ page import="com.SevenGroup.todolist.model.Task" %>
 
 <!DOCTYPE html>
 <html>
@@ -86,7 +86,7 @@
             String contextPath = request.getContextPath();
         %>
 
-        <form action="<%= contextPath %>/tasks/edit" method="post">
+        <form action="<%= contextPath %>/edittask" method="post">
             <input type="hidden" name="id" value="<%= task.getId() %>">
             <input type="hidden" name="createdAt" value="<%= task.getCreatedAt() %>">
 

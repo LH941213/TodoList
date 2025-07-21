@@ -12,18 +12,31 @@ import com.SevenGroup.todolist.utils.DBUtil;
 
 public class TaskDao {
 	public void addTask(Task task) throws SQLException{
-		String sql="INSERT INTO Tasks (title, description,user_id) VALUES (?,?,?)";
-		try(Connection conn = DBUtil.getConnection();
-	             PreparedStatement stmt = conn.prepareStatement(sql)) {
-				stmt.setString(1, task.getTitle());
-				stmt.setString(2, task.getDescription());
-				stmt.setInt(3, task.getUserId());
-				stmt.executeUpdate();
-		}
+		 String sql = "INSERT INTO Tasks (title, description, user_id, team_id) VALUES (?, ?, ?, ?)";
+		    try (Connection conn = DBUtil.getConnection();
+		         PreparedStatement stmt = conn.prepareStatement(sql)) {
+
+		        stmt.setString(1, task.getTitle());
+		        stmt.setString(2, task.getDescription());
+		        stmt.setInt(3, task.getUserId());
+
+		        if (task.getTeamId() != null) {
+		            stmt.setInt(4, task.getTeamId());
+		        } else {
+		            stmt.setNull(4, java.sql.Types.INTEGER);
+		        }
+
+		        stmt.executeUpdate();
+		    }
 	}
 	public List<Task>getTasksByUserId(int userId) throws SQLException{
 		List<Task> tasks =new ArrayList<>();
-		String sql = "SELECT id, title, description, is_completed, created_at, updated_at FROM Tasks WHERE user_id=?";
+		String sql = "SELECT t.id, t.title, t.description, t.is_completed, t.created_at, t.updated_at, " +
+                "t.team_id, tm.team_name " +
+                "FROM Tasks t " +
+                "LEFT JOIN Teams tm ON t.team_id = tm.team_id " +
+                "WHERE t.user_id = ?";
+
 		try (Connection conn = DBUtil.getConnection();
 	             PreparedStatement stmt = conn.prepareStatement(sql)){
 				stmt.setInt(1,userId );
@@ -36,6 +49,12 @@ public class TaskDao {
 		                task.setCompleted(rs.getBoolean("is_completed"));
 		                task.setCreatedAt(rs.getTimestamp("created_at"));
 		                task.setUpdatedAt(rs.getTimestamp("updated_at")); 
+		                int teamId = rs.getInt("team_id");
+		                if (!rs.wasNull()) {
+		                    task.setTeamId(teamId);
+		                }
+		                task.setTeamName(rs.getString("team_name")); // ✨ 新增字段
+
 		                tasks.add(task);
 	            }
 	        }
