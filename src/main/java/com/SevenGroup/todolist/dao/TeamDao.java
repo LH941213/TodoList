@@ -9,11 +9,33 @@ import java.util.ArrayList;
 import java.util.List;
 
 import com.SevenGroup.todolist.model.Team;
+import com.SevenGroup.todolist.model.User;
 import com.SevenGroup.todolist.utils.DBUtil;
 
 public class TeamDao {
 	
+	public List<Team> getAllTeams() throws SQLException {
+	    List<Team> teamList = new ArrayList<>();
+	    String sql = "SELECT id, team_name, description, creator_name, created_at FROM teams";
 
+	    try (Connection conn = DBUtil.getConnection();
+	         PreparedStatement stmt = conn.prepareStatement(sql);
+	         ResultSet rs = stmt.executeQuery()) {
+
+	        while (rs.next()) {
+	            Team team = new Team();
+	            team.setTeamId(rs.getInt("id"));
+	            team.setTeamName(rs.getString("team_name"));
+	            team.setDescription(rs.getString("description"));
+	            team.setCreatorName(rs.getString("creator_name"));
+	            team.setCreatedAt(rs.getDate("created_at"));
+
+	            teamList.add(team);
+	        }
+	    }
+
+	    return teamList;
+	}
 	    // 创建团队并返回生成的 team_id
 	    public int createTeam(String teamName, String description, int creatorId) throws SQLException {
 	        String sql = "INSERT INTO teams (team_name, description, created_by) VALUES (?, ?, ?)";
@@ -96,6 +118,67 @@ public class TeamDao {
 	            }
 	        }
 	        return teams;
+	    }
+	    public List<User> getTeamMembers(int teamId) {
+	        List<User> members = new ArrayList<>();
+
+	        String sql = """
+	            SELECT u.id, u.username, u.name, u.email, u.role
+	            FROM users u
+	            JOIN team_members tm ON u.id = tm.user_id
+	            WHERE tm.team_id = ?
+	        """;
+
+	        try (Connection conn = DBUtil.getConnection();
+	             PreparedStatement stmt = conn.prepareStatement(sql)) {
+
+	            stmt.setInt(1, teamId);
+	            ResultSet rs = stmt.executeQuery();
+
+	            while (rs.next()) {
+	                User user = new User();
+	                user.setId(rs.getInt("id"));
+	                user.setUsername(rs.getString("username"));
+	                user.setName(rs.getString("name"));
+	                user.setEmail(rs.getString("email"));
+	                user.setRole(rs.getString("role"));
+
+	                members.add(user);
+	            }
+
+	        } catch (SQLException e) {
+	            e.printStackTrace();
+	        }
+
+	        return members;
+	    }
+	    public void deleteTeam(int teamId) throws SQLException {
+	        String sqlTeam = "DELETE FROM teams WHERE team_id = ?";
+	        String sqlMembers = "DELETE FROM team_members WHERE team_id = ?";
+	        String sqlTasks = "DELETE FROM tasks WHERE team_id = ?";
+
+	        try (Connection conn = DBUtil.getConnection()) {
+	            conn.setAutoCommit(false); // ✔ 启用事务
+
+	            try (PreparedStatement stmt1 = conn.prepareStatement(sqlMembers);
+	                 PreparedStatement stmt2 = conn.prepareStatement(sqlTasks);
+	                 PreparedStatement stmt3 = conn.prepareStatement(sqlTeam)) {
+
+	                stmt1.setInt(1, teamId);
+	                stmt1.executeUpdate();
+
+	                stmt2.setInt(1, teamId);
+	                stmt2.executeUpdate();
+
+	                stmt3.setInt(1, teamId);
+	                stmt3.executeUpdate();
+
+	                conn.commit(); // 提交事务
+	            } catch (SQLException ex) {
+	                conn.rollback(); // 出错回滚
+	                throw ex;
+	            }
+	        }
 	    }
 
 

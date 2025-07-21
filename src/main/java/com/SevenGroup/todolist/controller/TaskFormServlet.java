@@ -12,6 +12,7 @@ import javax.servlet.http.HttpServletResponse;
 
 import com.SevenGroup.todolist.dao.TeamDao;
 import com.SevenGroup.todolist.model.Team;
+import com.SevenGroup.todolist.model.User;
 
 /**
  * Servlet implementation class TaskFormServlet
@@ -37,25 +38,41 @@ public class TaskFormServlet extends HttpServlet {
 	/**
 	 * @see HttpServlet#doGet(HttpServletRequest request, HttpServletResponse response)
 	 */
-	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-		// TODO Auto-generated method stub
-		 Integer userId = (Integer) request.getSession().getAttribute("userId");
-	        if (userId == null) {
-	            response.sendRedirect(request.getContextPath() + "/login.jsp");
-	            return;
-	        }
+    @Override
+    protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+        Integer userId = (Integer) request.getSession().getAttribute("userId");
+        if (userId == null) {
+            response.sendRedirect(request.getContextPath() + "/login.jsp");
+            return;
+        }
 
-	        try {
-	            List<Team> teamList = teamDao.getTeamsByUser(userId); // 获取当前用户参与的团队
-	            System.out.println("取得的团队数量：" + teamList.size());
-	            request.setAttribute("teamList", teamList);
-	            request.getRequestDispatcher("/add_task.jsp").forward(request, response);
-	        } catch (SQLException e) {
-	            e.printStackTrace();
-	            request.setAttribute("errorMessage", "チーム情報の取得に失敗しました");
-	            request.getRequestDispatcher("/error.jsp").forward(request, response);
-	        }
+        try {
+            TeamDao teamDao = new TeamDao();
+            List<Team> teamList = teamDao.getTeamsByUser(userId); // 所有團隊
+            request.setAttribute("teamList", teamList);
 
-	}
+            // 👇 檢查 teamId 是否從前端傳來
+            String teamIdStr = request.getParameter("teamId");
+            if (teamIdStr != null && !teamIdStr.isEmpty()) {
+                int teamId = Integer.parseInt(teamIdStr);
+                List<User> members = teamDao.getTeamMembers(teamId); // 團隊成員
+                Team team = teamDao.getTeamById(teamId);             // 團隊資訊
+
+                request.setAttribute("teamId", teamId);
+                request.setAttribute("members", members);
+                request.setAttribute("team", team);
+            }
+
+            request.getRequestDispatcher("/add_task.jsp").forward(request, response);
+
+        } catch (SQLException e) {
+            e.printStackTrace();
+            request.setAttribute("errorMessage", "チーム情報の取得に失敗しました：" + e.getMessage());
+            request.getRequestDispatcher("/error.jsp").forward(request, response);
+        } catch (NumberFormatException e) {
+            request.setAttribute("warningMessage", "teamIdが不正です");
+            request.getRequestDispatcher("/add_task.jsp").forward(request, response);
+        }
+    }
 
 }

@@ -1,0 +1,66 @@
+@charset "UTF-8";
+body {
+    font-family: 'Segoe UI', Tahoma, sans-serif;
+    background-color: #f8f9fa;
+    margin: 20px;
+    color: #333;
+}
+
+h2, h3 {
+    color: #2c3e50;
+}
+
+.team-info {
+    background-color: #ffffff;
+    border: 1px solid #dee2e6;
+    padding: 15px;
+    margin-bottom: 20px;
+    border-radius: 8px;
+}
+
+.team-info p {
+    margin: 8px 0;
+}
+
+table {
+    width: 100%;
+    border-collapse: collapse;
+    background-color: #ffffff;
+    margin-top: 10px;
+}
+
+table th {
+    background-color: #007bff;
+    color: white;
+    padding: 10px;
+    border-bottom: 2px solid #dee2e6;
+    text-align: left;
+}
+
+table td {
+    padding: 8px;
+    border-bottom: 1px solid #dee2e6;
+}
+
+ul {
+    background-color: #ffffff;
+    border: 1px solid #dee2e6;
+    border-radius: 8px;
+    padding: 10px;
+    list-style-type: none;
+}
+
+ul li {
+    padding: 6px 0;
+    border-bottom: 1px dashed #ccc;
+}
+
+a {
+    color: #007bff;
+    text-decoration: none;
+    font-weight: bold;
+}
+
+a:hover {
+    text-decoration: underline;
+}

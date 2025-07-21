@@ -61,9 +61,9 @@
   </style>
 </head>
 <body>
-
+	
   <h2>所属チーム一覧</h2>
-
+	
   <div class="team-container">
     <c:forEach var="team" items="${teamList}">
       <div class="team-card">
@@ -71,10 +71,14 @@
         <p>${team.description}</p>
         <p><strong>作成者：</strong>${team.creatorName}</p>
         <p><strong>作成日：</strong>${team.createdAt}</p>
-        <a href="teamDetail.jsp?teamId=${team.teamId}">詳細を見る</a>
+        <a href="teamdetail?teamId=${team.teamId}">詳細を見る</a>
       </div>
     </c:forEach>
   </div>
+<form action="${pageContext.request.contextPath}/tasklist" method="get">
+  <button type="submit">🏠 チーム一覧に戻る</button>
+</form>
 
+	
 </body>
 </html>

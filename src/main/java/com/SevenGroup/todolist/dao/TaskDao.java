@@ -103,4 +103,41 @@ public class TaskDao {
             pstmt.executeUpdate();
         }
     }
+	public List<Task> getTasksByTeamId(int teamId) {
+	    List<Task> tasks = new ArrayList<>();
+
+	    // JOIN users 表以获取负责人姓名
+	    String sql = """
+	        SELECT t.id, t.title, t.status, t.team_id, t.deadline,
+	               t.assigned_to, u.name AS assignee_name
+	        FROM tasks t
+	        JOIN users u ON t.assigned_to = u.id
+	        WHERE t.team_id = ?
+	    """;
+
+	    try (Connection conn = DBUtil.getConnection();
+	         PreparedStatement stmt = conn.prepareStatement(sql)) {
+
+	        stmt.setInt(1, teamId);
+	        ResultSet rs = stmt.executeQuery();
+
+	        while (rs.next()) {
+	            Task task = new Task();
+	            task.setId(rs.getInt("id"));
+	            task.setTitle(rs.getString("title"));
+	            task.setStatus(rs.getString("status"));
+	            task.setTeamId(rs.getInt("team_id"));
+	            task.setDeadline(rs.getDate("deadline"));
+	            task.setAssignedTo(rs.getInt("assigned_to"));
+	            task.setAssigneeName(rs.getString("assignee_name")); // 👈 展示用字段
+
+	            tasks.add(task);
+	        }
+
+	    } catch (SQLException e) {
+	        e.printStackTrace();
+	    }
+
+	    return tasks;
+	}
 }

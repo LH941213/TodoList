@@ -9,6 +9,8 @@ public class Task {
     private Date updatedAt; 
     private int userId; 
     private int assignedTo;    // 被分配者（如果有）
+    private String assigneeName;
+
     private Integer teamId;    // 所屬團隊，可為 null
     private String teamName;
 
@@ -50,6 +52,9 @@ public class Task {
 
     public int getAssignedTo() { return assignedTo; }
     public void setAssignedTo(int assignedTo) { this.assignedTo = assignedTo; }
+    public String getAssigneeName() { return assigneeName; }
+    public void setAssigneeName(String assigneeName) { this.assigneeName = assigneeName; }
+
 
     public Integer getTeamId() { return teamId; }
     public void setTeamId(Integer teamId) { this.teamId = teamId; }

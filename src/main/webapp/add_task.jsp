@@ -119,7 +119,17 @@
                     </c:forEach>
                 </select>
             </div>
-
+			<!-- 👇 新增责任人选择 -->
+			<div id="assigneeBlock" style="display: block;">
+			    <label>担当者：</label>
+			    <select name="assignedTo">
+			        <option value="">選択してください</option>
+			        <c:forEach var="user" items="${members}">
+			            <option value="${user.id}">${user.name}</option>
+			        </c:forEach>
+			    </select>
+			</div>
+			
             <div class="buttons">
                 <button type="submit">保存</button>
                 <button type="button" onclick="location.href='${pageContext.request.contextPath}/index.jsp'">キャンセル</button>

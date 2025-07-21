@@ -24,6 +24,7 @@ public class AddTaskServlet extends HttpServlet {
             taskDao = new TaskDao();
         
     }
+
 	/**
 	 * @see HttpServlet#doPost(HttpServletRequest request, HttpServletResponse response)
 	 */
@@ -35,7 +36,7 @@ public class AddTaskServlet extends HttpServlet {
 	        String taskType = request.getParameter("taskType");
 	        String teamIdStr = request.getParameter("teamId");
 	        Integer userId = (Integer) request.getSession().getAttribute("userId");
-
+	        
 	    	if(userId==null) {
 				request.setAttribute("errorMessage", "ログインしてください。");
 				request.getRequestDispatcher("/login.jsp").forward(request, response);
@@ -51,7 +52,14 @@ public class AddTaskServlet extends HttpServlet {
 	             Task newTask = new Task();
 	             newTask.setTitle(title);
 	             newTask.setDescription(description);
-	             newTask.setAssignedTo(userId); // 担当者
+	          // 👇 处理负责人字段
+	             String assignedToStr = request.getParameter("assignedTo");
+	             Integer assignedTo = (assignedToStr != null && !assignedToStr.isEmpty())
+	                 ? Integer.parseInt(assignedToStr)
+	                 : userId;
+	             newTask.setAssignedTo(assignedTo);
+
+	             
 	             newTask.setUserId(userId);  // 作成者（如果你有这个字段）
 
 	             if ("team".equals(taskType) && teamIdStr != null && !teamIdStr.isEmpty()) {
